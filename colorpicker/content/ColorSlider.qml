@@ -1,6 +1,5 @@
 // Vertical "slider" control used in colorpicker
 import Qt 4.7
-
 Item {
     property real value: (1 - pickerCursor.y/height)
     width: 15; height: 300

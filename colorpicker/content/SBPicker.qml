@@ -3,7 +3,7 @@ import Qt 4.7
 
 Item {
     id: root
-    property real hue : 1
+    property color hueColor : "blue"
     property real saturation : pickerCursor.x/width
     property real brightness : 1 - pickerCursor.y/height
     width: 200; height: 200
@@ -13,7 +13,7 @@ Item {
         rotation: -90
         gradient: Gradient {
             GradientStop { position: 0.0; color: "#FFFFFF" }
-            GradientStop { position: 1.0; color: Qt.hsla(root.hue, 1, 0.5, 1) }
+            GradientStop { position: 1.0; color: root.hueColor }
         }
     }
     Rectangle {

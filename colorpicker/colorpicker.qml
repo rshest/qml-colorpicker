@@ -1,5 +1,4 @@
 //  A toy QML colorpicker control, by Ruslan Shestopalyuk
-
 import Qt 4.7
 import "content"
 import "content/ColorUtils.js" as ColorUtils
@@ -17,14 +16,13 @@ Rectangle {
         // saturation/brightness picker box
         SBPicker {
             id: sbPicker
-            hue : hueSlider.value
+            hueColor : hueSlider.value
             width: parent.height; height: parent.height
         }
 
         // hue picking slider
         Item {
-            width: 12
-            height: parent.height
+            width: 12; height: parent.height
             Rectangle {
                 anchors.fill: parent
                 gradient: Gradient {

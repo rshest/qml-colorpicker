@@ -1,12 +1,8 @@
 // Checkerboard-filled rectangle
 import Qt 4.7
-
 Grid {
-    property int cellSide: width/2 - 1
-    property color oddColor: "gray"
-    property color evenColor: "white"
-
     id: root
+    property int cellSide: 5
     anchors.fill: parent
     rows: height/cellSide; columns: width/cellSide
     clip: true
@@ -14,7 +10,7 @@ Grid {
         model: root.columns*root.rows
         Rectangle {
             width: root.cellSide; height: root.cellSide
-            color: (index%2 == 0) ? root.oddColor : root.evenColor;
+            color: (index%2 == 0) ? "gray" : "white"
         }
     }
 }
