@@ -1,5 +1,5 @@
 // Checkerboard-filled rectangle
-import Qt 4.7
+import QtQuick 2.11
 Grid {
     id: root
     property int cellSide: 5

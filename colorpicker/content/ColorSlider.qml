@@ -1,5 +1,5 @@
 // Vertical "slider" control used in colorpicker
-import Qt 4.7
+import QtQuick 2.11
 Item {
     property real value: (1 - pickerCursor.y/height)
     width: 15; height: 300
@@ -25,7 +25,9 @@ Item {
                 pickerCursor.y = Math.max(0, Math.min(height, mouse.y))
             }
         }
-        onPositionChanged: handleMouse(mouse)
+        onPositionChanged: {
+            handleMouse(mouse)
+        }
         onPressed: handleMouse(mouse)
     }
 }
