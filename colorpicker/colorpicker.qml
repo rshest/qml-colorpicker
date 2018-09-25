@@ -43,7 +43,7 @@ Rectangle {
                 } else if(0.85 <= v && v <= 1.0) {
                     return Qt.rgba(1.0, 1.0 - (v-0.85)/0.15, 0.0, 1.0)
                 } else {
-                    console.log("something wrong!?")
+                    console.log("hue value is outside of expected boundaries of [0, 1]")
                     return "red"
                 }
             }
