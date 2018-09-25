@@ -1,5 +1,5 @@
 //  Fancy pseudo-3d control border
-import Qt 4.7
+import QtQuick 2.9
 
 Rectangle {
     width : 40; height : 15; radius: 2

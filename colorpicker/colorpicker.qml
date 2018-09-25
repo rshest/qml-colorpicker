@@ -1,30 +1,62 @@
 //  A toy QML colorpicker control, by Ruslan Shestopalyuk
-import Qt 4.7
+import QtQuick 2.11
+import QtQuick.Layouts 1.11
 import "content"
-import "content/ColorUtils.js" as ColorUtils
 
 Rectangle {
     id: colorPicker
-    property color colorValue: ColorUtils.hsba(hueSlider.value, sbPicker.saturation,
+    property color colorValue: _hsla(hueSlider.value, sbPicker.saturation,
                                                sbPicker.brightness, alphaSlider.value)
-    width: 300; height: 200
+    property bool enableAlphaChannel: true
+    property bool enableDetails: true
+
+    signal colorChanged(color changedColor)
+
+    width: 320; height: 200
     color: "#3C3C3C"
-    Row {
-        anchors.fill: parent
+
+    RowLayout {
+        id: row
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenterCenter
+        anchors.top: parent.top
         spacing: 3
 
         // saturation/brightness picker box
         SBPicker {
             id: sbPicker
-            hueColor : hueSlider.value
-            width: parent.height; height: parent.height
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            hueColor: {
+                var v = 1.0-hueSlider.value
+                console.debug("v:"+v)
+
+                if(0.0 <= v && v < 0.16) {
+                    return Qt.rgba(1.0, 0.0, v/0.16, 1.0)
+                } else if(0.16 <= v && v < 0.33) {
+                    return Qt.rgba(1.0 - (v-0.16)/0.17, 0.0, 1.0, 1.0)
+                } else if(0.33 <= v && v < 0.5) {
+                    return Qt.rgba(0.0, ((v-0.33)/0.17), 1.0, 1.0)
+                } else if(0.5 <= v && v < 0.76) {
+                    return Qt.rgba(0.0, 1.0, 1.0 - (v-0.5)/0.26, 1.0)
+                } else if(0.76 <= v && v < 0.85) {
+                    return Qt.rgba((v-0.76)/0.09, 1.0, 0.0, 1.0)
+                } else if(0.85 <= v && v <= 1.0) {
+                    return Qt.rgba(1.0, 1.0 - (v-0.85)/0.15, 0.0, 1.0)
+                } else {
+                    console.log("hue value is outside of expected boundaries of [0, 1]")
+                    return "red"
+                }
+            }
         }
 
         // hue picking slider
         Item {
-            width: 12; height: parent.height
+            width: 12
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            Layout.fillHeight: true
             Rectangle {
                 anchors.fill: parent
+                id: colorBar
                 gradient: Gradient {
                     GradientStop { position: 1.0;  color: "#FF0000" }
                     GradientStop { position: 0.85; color: "#FFFF00" }
@@ -35,13 +67,18 @@ Rectangle {
                     GradientStop { position: 0.0;  color: "#FF0000" }
                 }
             }
-            ColorSlider { id: hueSlider; anchors.fill: parent }
+            ColorSlider {
+                id: hueSlider; anchors.fill: parent
+            }
         }
 
         // alpha (transparency) picking slider
         Item {
             id: alphaPicker
-            width: 12; height: parent.height
+            visible: enableAlphaChannel
+            width: 12
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            Layout.fillHeight: true
             Checkerboard { cellSide: 4 }
             //  alpha intensity gradient background
             Rectangle {
@@ -56,14 +93,17 @@ Rectangle {
 
         // details column
         Column {
-            anchors.left: alphaPicker.right; anchors.right: parent.right
-            anchors.leftMargin: 4; anchors.rightMargin: 3
-            height: parent.height
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             spacing: 4
+            visible: enableDetails
 
             // current color/alpha display rectangle
-            Rectangle {
-                width: parent.width; height: 30
+            PanelBorder {
+                width: parent.width
+                height: 30
+                visible: enableAlphaChannel
                 Checkerboard { cellSide: 5 }
                 Rectangle {
                     width: parent.width; height: 30
@@ -83,7 +123,7 @@ Rectangle {
                     font.pixelSize: 11
                     maximumLength: 9
                     focus: true
-                    text: ColorUtils.fullColorString(colorPicker.colorValue, alphaSlider.value)
+                    text: _fullColorString(colorPicker.colorValue, alphaSlider.value)
                     selectByMouse: true
                 }
             }
@@ -107,26 +147,48 @@ Rectangle {
                 width: parent.width
                 NumberBox {
                     caption: "R:"
-                    value: ColorUtils.getChannelStr(colorPicker.colorValue, 0)
+                    value: _getChannelStr(colorPicker.colorValue, 0)
                     min: 0; max: 255
                 }
                 NumberBox {
                     caption: "G:"
-                    value: ColorUtils.getChannelStr(colorPicker.colorValue, 1)
+                    value: _getChannelStr(colorPicker.colorValue, 1)
                     min: 0; max: 255
                 }
                 NumberBox {
                     caption: "B:"
-                    value: ColorUtils.getChannelStr(colorPicker.colorValue, 2)
+                    value: _getChannelStr(colorPicker.colorValue, 2)
                     min: 0; max: 255
                 }
             }
 
             // alpha value box
             NumberBox {
+                visible: enableAlphaChannel
                 caption: "A:"; value: Math.ceil(alphaSlider.value*255)
                 min: 0; max: 255
             }
         }
+    }
+
+    //  creates color value from hue, saturation, brightness, alpha
+    function _hsla(h, s, b, a) {
+        var lightness = (2 - s)*b
+        var satHSL = s*b/((lightness <= 1) ? lightness : 2 - lightness)
+        lightness /= 2
+
+        var c = Qt.hsla(h, satHSL, lightness, a)
+
+        colorChanged(c)
+
+        return c
+    }
+    //  creates a full color string from color value and alpha[0..1], e.g. "#FF00FF00"
+    function _fullColorString(clr, a) {
+        return "#" + ((Math.ceil(a*255) + 256).toString(16).substr(1, 2) + clr.toString().substr(1, 6)).toUpperCase()
+    }
+    //  extracts integer color channel value [0..255] from color value
+    function _getChannelStr(clr, channelIdx) {
+        return parseInt(clr.toString().substr(channelIdx*2 + 1, 2), 16)
     }
 }
