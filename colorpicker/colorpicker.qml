@@ -9,22 +9,25 @@ Rectangle {
                                                sbPicker.brightness, alphaSlider.value)
     property bool enableAlphaChannel: true
     property bool enableDetails: true
-
+    property int colorHandleRadius : 8
     signal colorChanged(color changedColor)
 
-    width: 320; height: 200
+    width: 400; height: 200
     color: "#3C3C3C"
 
     RowLayout {
         id: row
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenterCenter
-        anchors.top: parent.top
+        x: Math.round(parent.width / 2 - implicitWidth / 2)
+        y: Math.round(parent.height / 2 - implicitHeight / 2)
+        width: colorHandleRadius* 2 + sbPicker.implicitWidth + huePicker.implicitWidth + alphaPicker.implicitWidth + detailColumn.implicitWidth
+        height: colorHandleRadius* 2 + sbPicker.implicitHeight
         spacing: 3
 
         // saturation/brightness picker box
         SBPicker {
             id: sbPicker
+            width: _getSBPickerSize()
+            height: _getSBPickerSize()
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             hueColor: {
                 var v = 1.0-hueSlider.value
@@ -51,6 +54,7 @@ Rectangle {
 
         // hue picking slider
         Item {
+            id: huePicker
             width: 12
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             Layout.fillHeight: true
@@ -93,9 +97,8 @@ Rectangle {
 
         // details column
         Column {
+            id: detailColumn
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-            Layout.fillHeight: true
-            Layout.fillWidth: true
             spacing: 4
             visible: enableDetails
 
@@ -122,7 +125,7 @@ Rectangle {
                     selectionColor: "#FF7777AA"
                     font.pixelSize: 11
                     maximumLength: 9
-                    focus: true
+                    focus: false
                     text: _fullColorString(colorPicker.colorValue, alphaSlider.value)
                     selectByMouse: true
                 }
@@ -190,5 +193,22 @@ Rectangle {
     //  extracts integer color channel value [0..255] from color value
     function _getChannelStr(clr, channelIdx) {
         return parseInt(clr.toString().substr(channelIdx*2 + 1, 2), 16)
+    }
+    //  calculates SBPicker size from this
+    function _getSBPickerSize() {
+        var h = colorPicker.height - 2 * colorHandleRadius
+        var w = colorPicker.width - 2 * colorHandleRadius - huePicker.width
+        //if(enableAlphaChannel) {
+            w = w - alphaPicker.implicitWidth
+        //}
+        //if(enableDetails) {
+            w = w - detailColumn.implicitWidth
+        //}
+
+        if(h > w) {
+            return w
+        } else {
+            return h
+        }
     }
 }

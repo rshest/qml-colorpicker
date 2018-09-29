@@ -6,8 +6,8 @@ Item {
     property color hueColor : "blue"
     property real saturation : pickerCursor.x/width
     property real brightness : 1 - pickerCursor.y/height
+    property int r : colorHandleRadius
     width: 200; height: 200
-    clip: true
     Rectangle {
         anchors.fill: parent;
         rotation: -90
@@ -25,11 +25,10 @@ Item {
     }
     Item {
         id: pickerCursor
-        property int r : 8
         Rectangle {
-            x: -parent.r; y: -parent.r
-            width: parent.r*2; height: parent.r*2
-            radius: parent.r
+            x: -r; y: -r
+            width: r*2; height: r*2
+            radius: r
             border.color: "black"; border.width: 2
             color: "transparent"
             Rectangle {
@@ -41,11 +40,14 @@ Item {
         }
     }
     MouseArea {
-        anchors.fill: parent
+        x: -r
+        y: -r
+        width: parent.width + r
+        height: parent.height + r
         function handleMouse(mouse) {
             if (mouse.buttons & Qt.LeftButton) {
-                pickerCursor.x = Math.max(0, Math.min(width,  mouse.x));
-                pickerCursor.y = Math.max(0, Math.min(height, mouse.y));
+                pickerCursor.x = Math.max(0, Math.min(width,  mouse.x) - r);
+                pickerCursor.y = Math.max(0, Math.min(height, mouse.y) - r);
             }
         }
         onPositionChanged: handleMouse(mouse)

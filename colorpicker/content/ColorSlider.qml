@@ -1,6 +1,7 @@
 // Vertical "slider" control used in colorpicker
 import QtQuick 2.11
 Item {
+    property int cursorHeight: 7
     property real value: (1 - pickerCursor.y/height)
     width: 15; height: 300
     Item {
@@ -8,7 +9,7 @@ Item {
         width: parent.width
         Rectangle {
             x: -3; y: -height*0.5
-            width: parent.width + 4; height: 7
+            width: parent.width + 4; height: cursorHeight
             border.color: "black"; border.width: 1
             color: "transparent"
             Rectangle {
@@ -19,10 +20,13 @@ Item {
         }
     }
     MouseArea {
-        anchors.fill: parent
+        y: -Math.round(cursorHeight/2)
+        height: parent.height+cursorHeight
+        anchors.left: parent.left
+        anchors.right: parent.right
         function handleMouse(mouse) {
             if (mouse.buttons & Qt.LeftButton) {
-                pickerCursor.y = Math.max(0, Math.min(height, mouse.y))
+                pickerCursor.y = Math.max(0, Math.min(height, mouse.y)-cursorHeight)
             }
         }
         onPositionChanged: {
