@@ -4,9 +4,10 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.1
 
 Window {
+    id: window
     visible: true
-    width: 640
-    height: 480
+    width: 400
+    height: 350
     title: qsTr("Hello Colorpicker")
 
     ColumnLayout {
@@ -15,7 +16,7 @@ Window {
         spacing: 1
         Label {
             font.bold: true
-            text: "Color dialog properties:"
+            text: "Colorpicker properties:"
         }
         CheckBox {
             id: colorDialogAlpha
@@ -47,9 +48,11 @@ Window {
             }
         }
     }
+
     Colorpicker {
         id: my_picker
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
 
         onColorChanged: {
             // test signal handler
