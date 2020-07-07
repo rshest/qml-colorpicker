@@ -10,14 +10,21 @@ Window {
     height: 350
     title: qsTr("Hello Colorpicker")
 
-    ColumnLayout {
+    GridLayout {
         anchors.top: parent.top
         anchors.left: parent.left
-        spacing: 1
+        columnSpacing: 1
+        rowSpacing: 1
+        rows: 4
+        flow: GridLayout.TopToBottom
+
         Label {
             font.bold: true
             text: "Colorpicker properties:"
+            Layout.columnSpan: 2
+            Layout.alignment: Qt.AlignHCenter
         }
+
         CheckBox {
             id: colorDialogAlpha
             text: "Show alpha channel"
@@ -35,7 +42,7 @@ Window {
             }
         }
         Row {
-            spacing: 10
+            Layout.topMargin: 10
             Button {
                 width: 40
                 height: 20
@@ -45,6 +52,22 @@ Window {
             }
             Label {
                 text: "Defined Color"
+            }
+        }
+        CheckBox {
+            id: paletteMode
+            text: "Palette Mode"
+            checked: my_picker.paletteMode
+            onClicked : {
+                my_picker.paletteMode = checked
+            }
+        }
+        CheckBox {
+            id: paletteModeDefault
+            text: "Enable Palette Mode"
+            checked: my_picker.enablePaletteMode
+            onClicked : {
+                my_picker.enablePaletteMode = checked
             }
         }
     }
