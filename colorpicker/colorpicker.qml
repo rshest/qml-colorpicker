@@ -1,63 +1,106 @@
 //  A toy QML colorpicker control, by Ruslan Shestopalyuk
 import QtQuick 2.11
-import QtQuick.Layouts 1.11
+import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.4
 import "content"
 
 Rectangle {
     id: colorPicker
-    property color colorValue: _hsla(hueSlider.value, sbPicker.saturation,
-                                               sbPicker.brightness, alphaSlider.value)
+    property color colorValue: paletteMode ?
+                                   _rgb(paletts.paletts_color, alphaSlider.value) :
+                                   _hsla(hueSlider.value, sbPicker.saturation,
+                                    sbPicker.brightness, alphaSlider.value)
     property bool enableAlphaChannel: true
     property bool enableDetails: true
     property int colorHandleRadius : 8
+    property bool paletteMode : false
+    property bool enablePaletteMode : false
+    property string switchToColorPickerString: "Palette..."
+    property string switchToPalleteString: "Color Picker..."
+
     signal colorChanged(color changedColor)
 
     width: 400; height: 200
     color: "#3C3C3C"
 
+    Text {
+        id: palette_switch
+        textFormat: Text.StyledText
+        text: paletteMode ?
+                  "<a href=\".\">" + switchToColorPickerString + "</a>" :
+                  "<a href=\".\">" + switchToPalleteString + "</a>"
+        visible: enablePaletteMode
+        onLinkActivated: {
+            paletteMode = !paletteMode
+        }
+        anchors.right: parent.right
+        anchors.rightMargin: colorHandleRadius
+        linkColor: "white"
+    }
+
+    clip: true
+
     RowLayout {
-        id: row
-        x: Math.round(parent.width / 2 - implicitWidth / 2)
-        y: Math.round(parent.height / 2 - implicitHeight / 2)
-        width: colorHandleRadius* 2 + sbPicker.implicitWidth + huePicker.implicitWidth + alphaPicker.implicitWidth + detailColumn.implicitWidth
-        height: colorHandleRadius* 2 + sbPicker.implicitHeight
-        spacing: 3
+        id: picker
+        anchors.top: enablePaletteMode　? palette_switch.bottom : parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.rightMargin: colorHandleRadius
+        anchors.bottom: parent.bottom
+        spacing: 0
 
-        // saturation/brightness picker box
-        SBPicker {
-            id: sbPicker
-            width: _getSBPickerSize()
-            height: _getSBPickerSize()
-            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-            hueColor: {
-                var v = 1.0-hueSlider.value
-                console.debug("v:"+v)
+        SwipeView {
+            id: swipe
+            clip: true
+            interactive: false
+            currentIndex: paletteMode ? 1 : 0
 
-                if(0.0 <= v && v < 0.16) {
-                    return Qt.rgba(1.0, 0.0, v/0.16, 1.0)
-                } else if(0.16 <= v && v < 0.33) {
-                    return Qt.rgba(1.0 - (v-0.16)/0.17, 0.0, 1.0, 1.0)
-                } else if(0.33 <= v && v < 0.5) {
-                    return Qt.rgba(0.0, ((v-0.33)/0.17), 1.0, 1.0)
-                } else if(0.5 <= v && v < 0.76) {
-                    return Qt.rgba(0.0, 1.0, 1.0 - (v-0.5)/0.26, 1.0)
-                } else if(0.76 <= v && v < 0.85) {
-                    return Qt.rgba((v-0.76)/0.09, 1.0, 0.0, 1.0)
-                } else if(0.85 <= v && v <= 1.0) {
-                    return Qt.rgba(1.0, 1.0 - (v-0.85)/0.15, 0.0, 1.0)
-                } else {
-                    console.log("hue value is outside of expected boundaries of [0, 1]")
-                    return "red"
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            SBPicker {
+                id: sbPicker
+
+                height: parent.implicitHeight
+                width: parent.implicitWidth
+
+                hueColor: {
+                    var v = 1.0-hueSlider.value
+                    console.debug("v:"+v)
+
+                    if(0.0 <= v && v < 0.16) {
+                        return Qt.rgba(1.0, 0.0, v/0.16, 1.0)
+                    } else if(0.16 <= v && v < 0.33) {
+                        return Qt.rgba(1.0 - (v-0.16)/0.17, 0.0, 1.0, 1.0)
+                    } else if(0.33 <= v && v < 0.5) {
+                        return Qt.rgba(0.0, ((v-0.33)/0.17), 1.0, 1.0)
+                    } else if(0.5 <= v && v < 0.76) {
+                        return Qt.rgba(0.0, 1.0, 1.0 - (v-0.5)/0.26, 1.0)
+                    } else if(0.76 <= v && v < 0.85) {
+                        return Qt.rgba((v-0.76)/0.09, 1.0, 0.0, 1.0)
+                    } else if(0.85 <= v && v <= 1.0) {
+                        return Qt.rgba(1.0, 1.0 - (v-0.85)/0.15, 0.0, 1.0)
+                    } else {
+                        console.log("hue value is outside of expected boundaries of [0, 1]")
+                        return "red"
+                    }
                 }
+            }
+
+            Palettes {
+                id: paletts
             }
         }
 
         // hue picking slider
         Item {
             id: huePicker
+            visible: !paletteMode
             width: 12
-            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             Layout.fillHeight: true
+            Layout.topMargin: colorHandleRadius
+            Layout.bottomMargin: colorHandleRadius
+
             Rectangle {
                 anchors.fill: parent
                 id: colorBar
@@ -81,8 +124,10 @@ Rectangle {
             id: alphaPicker
             visible: enableAlphaChannel
             width: 12
-            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            Layout.leftMargin: 4
             Layout.fillHeight: true
+            Layout.topMargin: colorHandleRadius
+            Layout.bottomMargin: colorHandleRadius
             Checkerboard { cellSide: 4 }
             //  alpha intensity gradient background
             Rectangle {
@@ -92,14 +137,19 @@ Rectangle {
                     GradientStop { position: 1.0; color: "#00000000" }
                 }
             }
-            ColorSlider { id: alphaSlider; anchors.fill: parent }
+            ColorSlider {
+                id: alphaSlider; anchors.fill: parent
+            }
         }
 
         // details column
         Column {
             id: detailColumn
-            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-            spacing: 4
+            Layout.leftMargin: 4
+            Layout.fillHeight: true
+            Layout.topMargin: colorHandleRadius
+            Layout.bottomMargin: colorHandleRadius
+            Layout.alignment: Qt.AlignRight
             visible: enableDetails
 
             // current color/alpha display rectangle
@@ -186,6 +236,16 @@ Rectangle {
 
         return c
     }
+
+    function _rgb(rgb, a) {
+
+        var c = Qt.rgba(rgb.r, rgb.g, rgb.b, a)
+
+        colorChanged(c)
+
+        return c
+    }
+
     //  creates a full color string from color value and alpha[0..1], e.g. "#FF00FF00"
     function _fullColorString(clr, a) {
         return "#" + ((Math.ceil(a*255) + 256).toString(16).substr(1, 2) + clr.toString().substr(1, 6)).toUpperCase()
@@ -193,22 +253,5 @@ Rectangle {
     //  extracts integer color channel value [0..255] from color value
     function _getChannelStr(clr, channelIdx) {
         return parseInt(clr.toString().substr(channelIdx*2 + 1, 2), 16)
-    }
-    //  calculates SBPicker size from this
-    function _getSBPickerSize() {
-        var h = colorPicker.height - 2 * colorHandleRadius
-        var w = colorPicker.width - 2 * colorHandleRadius - huePicker.width
-        //if(enableAlphaChannel) {
-            w = w - alphaPicker.implicitWidth
-        //}
-        //if(enableDetails) {
-            w = w - detailColumn.implicitWidth
-        //}
-
-        if(h > w) {
-            return w
-        } else {
-            return h
-        }
     }
 }
