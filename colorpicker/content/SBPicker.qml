@@ -11,9 +11,9 @@ Item {
     Rectangle {
         x : r
         y : r
+        rotation: -90
         width: parent.height - 2 * r
         height: parent.width - 2 * r
-        rotation: -90
         gradient: Gradient {
             GradientStop { position: 0.0; color: "#FFFFFF" }
             GradientStop { position: 1.0; color: root.hueColor }
@@ -45,14 +45,13 @@ Item {
         }
     }
     MouseArea {
+        anchors.fill: parent
         x: r
         y: r
-        width: parent.width - 2 * r
-        height: parent.height - 2 *  r
         function handleMouse(mouse) {
             if (mouse.buttons & Qt.LeftButton) {
-                pickerCursor.x = Math.max(0, Math.min(width,  mouse.x) - r);
-                pickerCursor.y = Math.max(0, Math.min(height, mouse.y) - r);
+                pickerCursor.x = Math.max(0, Math.min(width,  mouse.x) - 2 * r);
+                pickerCursor.y = Math.max(0, Math.min(height, mouse.y) - 2 * r);
             }
         }
         onPositionChanged: handleMouse(mouse)

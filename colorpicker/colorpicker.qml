@@ -37,12 +37,13 @@ Rectangle {
             //y: Math.round(parent.height / 2 - implicitHeight / 2)
 //            width: colorHandleRadius* 2 + sbPicker.implicitWidth + huePicker.implicitWidth + alphaPicker.implicitWidth + detailColumn.implicitWidth
 //            height: colorHandleRadius* 2 + sbPicker.implicitHeight
-            anchors.centerIn: Qt.AlignHCenter
+            anchors.fill: parent
             //anchors.margins: colorHandleRadius
             spacing: 3
 
             // saturation/brightness picker box
             SBPicker {
+
                 id: sbPicker
 
                 height: parent.height
