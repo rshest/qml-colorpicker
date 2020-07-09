@@ -18,10 +18,40 @@ Rectangle {
     width: 400; height: 200
     color: "#3C3C3C"
 
+    Text {
+        id: palette_switch
+        textFormat: Text.StyledText
+        text: paletteMode ? "<a href=\".\">Color Picker...</a>" : "<a href=\".\">Palette...</a>"
+        visible: enablePaletteMode
+        onLinkActivated: {
+            paletteMode = !paletteMode
+        }
+        anchors.right: parent.right
+        anchors.rightMargin: colorHandleRadius
+        linkColor: "white"
+    }
+
+    /*
+    onEnablePaletteModeChanged: {
+        if(enablePaletteMode) {
+            console.debug('enablePaletteMode is set')
+            swipe.anchors.top = palette_switch.Bottom
+        } else {
+            console.debug('enablePaletteMode is not set')
+            swipe.anchors.top = colorPicker.Top
+        }
+    }
+    */
+
     SwipeView {
+        id: swipe
         interactive: false
         currentIndex: paletteMode ? 1 : 0
-        anchors.fill: parent
+        anchors.top: enablePaletteMode　? palette_switch.bottom : parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        //:
 
         clip: true
 /*
@@ -226,14 +256,14 @@ Rectangle {
                 }
             }
         }
-/*
+
         Item {
 
             Label {
                 text:"a"
             }
         }
-        */
+
     }
 
     //  creates color value from hue, saturation, brightness, alpha
