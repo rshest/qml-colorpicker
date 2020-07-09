@@ -10,8 +10,9 @@ Item {
 
     Rectangle {
         x : r
-        y : r
+        y : r + parent.height - 2 * r
         rotation: -90
+        transformOrigin: Item.TopLeft
         width: parent.height - 2 * r
         height: parent.width - 2 * r
         gradient: Gradient {
