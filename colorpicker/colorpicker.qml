@@ -22,6 +22,7 @@ Rectangle {
         interactive: false
         currentIndex: paletteMode ? 1 : 0
         anchors.fill: parent
+
         clip: true
 /*
         property int child_x: 0
@@ -29,7 +30,7 @@ Rectangle {
         property int child_width: 0
         property int child_height: 0
 */
-        Row {
+        RowLayout {
             id: picker
             //anchors.rightMargin: colorHandleRadius // loop?
 
@@ -37,7 +38,7 @@ Rectangle {
             //y: Math.round(parent.height / 2 - implicitHeight / 2)
 //            width: colorHandleRadius* 2 + sbPicker.implicitWidth + huePicker.implicitWidth + alphaPicker.implicitWidth + detailColumn.implicitWidth
 //            height: colorHandleRadius* 2 + sbPicker.implicitHeight
-            anchors.fill: parent
+//            anchors.fill: parent
             //anchors.margins: colorHandleRadius
             spacing: 3
 
@@ -47,7 +48,11 @@ Rectangle {
                 id: sbPicker
 
                 height: parent.height
-                width: parent.height
+                width: implicitWidth
+                Layout.fillWidth: true
+                Layout.preferredWidth: implicitWidth
+                Layout.preferredHeight: height
+
                 //anchors.topMargin: colorHandleRadius
                 //anchors.bottomMargin: colorHandleRadius
                 //width: _getContentHeight()
@@ -84,9 +89,9 @@ Rectangle {
             Item {
                 id: huePicker
                 width: 12
-                height: parent.height - colorHandleRadius*2
-                anchors.topMargin: colorHandleRadius
-                anchors.bottomMargin: colorHandleRadius
+                Layout.fillHeight: true
+                Layout.topMargin: colorHandleRadius
+                Layout.bottomMargin: colorHandleRadius
                 //Layout.fillHeight: true
 //                Layout.topMargin: colorHandleRadius * 2
 //                Layout.bottomMargin: colorHandleRadius * 2
@@ -114,9 +119,10 @@ Rectangle {
                 id: alphaPicker
                 visible: enableAlphaChannel
                 width: 12
-                height: parent.height - colorHandleRadius*2
-                anchors.topMargin: colorHandleRadius
-                anchors.bottomMargin: colorHandleRadius
+                Layout.fillHeight: true
+//                height: parent.height - colorHandleRadius*2
+                Layout.topMargin: colorHandleRadius
+                Layout.bottomMargin: colorHandleRadius
                 //Layout.fillHeight: true
 //                Layout.topMargin: colorHandleRadius * 2
 //                Layout.bottomMargin: colorHandleRadius * 2
@@ -135,9 +141,13 @@ Rectangle {
             // details column
             Column {
                 id: detailColumn
-                height: parent.height - colorHandleRadius*2
-                anchors.topMargin: colorHandleRadius
-                anchors.bottomMargin: colorHandleRadius
+                Layout.fillHeight: true
+//                Layout.fillWidth: true
+//                height: parent.height - colorHandleRadius*2
+                Layout.topMargin: colorHandleRadius
+                Layout.bottomMargin: colorHandleRadius
+                Layout.alignment: Qt.AlignRight
+                Layout.rightMargin: colorHandleRadius
                 //Layout.fillHeight: true
 //                Layout.topMargin: colorHandleRadius * 2
 //                Layout.bottomMargin: colorHandleRadius * 2
