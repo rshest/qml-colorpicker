@@ -51,8 +51,7 @@ Rectangle {
             id: swipe
             clip: true
             interactive: false
-//            currentIndex: paletteMode ? 1 : 0
-            currentIndex: 1
+            currentIndex: paletteMode ? 1 : 0
 
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -87,7 +86,7 @@ Rectangle {
             }
 
             Palettes {
-                id:paletts
+                id: paletts
             }
         }
 
