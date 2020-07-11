@@ -88,8 +88,6 @@ Rectangle {
 
             Palettes {
                 id:paletts
-                anchors.fill: parent
-                id: paletts
             }
         }
 
