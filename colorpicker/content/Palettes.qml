@@ -6,219 +6,289 @@ GridLayout {
     id: grid
     Layout.margins: colorHandleRadius
     flow: GridLayout.TopToBottom
-    rows: 5
+    rows: 6
     columnSpacing: 0
     rowSpacing: 0
+    width: 26
+
 
     ButtonGroup {
         id: group
     }
 
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
+        target_color: "red"
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
 
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
 
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-    Palette {
-        ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
 
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
     }
 
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
     }
     Palette {
+        Layout.rightMargin: -6
         ButtonGroup.group: group
-        Layout.fillHeight: true
-        Layout.fillWidth: true
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
+    }
+    Palette {
+        Layout.rightMargin: -6
+        ButtonGroup.group: group
     }
 }
