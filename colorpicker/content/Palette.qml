@@ -5,11 +5,12 @@ CheckBox {
     id: control
     text: ""
     transformOrigin: Item.Center
-    property string target_color : "#21be2b"
-    property string border_color : "darkgray"
-    property string selected_border_color : "white"
+    property color target_color : "#21be2b"
+    property color border_color : "darkgray"
+    property color selected_border_color : "white"
     padding: 0
-    width: 25
+    width: 32
+    height: 32
 
     indicator: Rectangle {
         implicitWidth: 25
@@ -17,17 +18,18 @@ CheckBox {
         anchors.margins: 0
 
         x: control.leftPadding
-        y: parent.height / 2 - height / 2
-        width: 25
+        y: 0
+        width: 32
+        height: 32
         radius: 3
         border.color: (checked ? selected_border_color : border_color)
         border.width: 5
 
         Rectangle {
-            width: 17
-            height: 17
-            x: 4
-            y: 4
+            width: 20
+            height: 20
+            x: 6
+            y: 6
             radius: 2
             scale: 1.3
             border.width: 0

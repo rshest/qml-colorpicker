@@ -7,8 +7,10 @@ import "content"
 
 Rectangle {
     id: colorPicker
-    property color colorValue: _hsla(hueSlider.value, sbPicker.saturation,
-                                     sbPicker.brightness, alphaSlider.value)
+    property color colorValue: paletteMode ?
+                                   _rgb(paletts.paletts_color, alphaSlider.value) :
+                                   _hsla(hueSlider.value, sbPicker.saturation,
+                                    sbPicker.brightness, alphaSlider.value)
     property bool enableAlphaChannel: true
     property bool enableDetails: true
     property int colorHandleRadius : 8
@@ -47,7 +49,8 @@ Rectangle {
             id: swipe
             clip: true
             interactive: false
-            currentIndex: paletteMode ? 1 : 0
+            //currentIndex: paletteMode ? 1 : 0
+            currentIndex: 1
 
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -80,13 +83,9 @@ Rectangle {
                     }
                 }
             }
-            RowLayout {
-                height: parent.implicitHeight
-                width: parent.implicitContentWidth
 
-                Palettes {
-
-                }
+            Palettes {
+                id:paletts
             }
         }
 
@@ -234,6 +233,11 @@ Rectangle {
 
         return c
     }
+
+    function _rgb(rgb, a) {
+        return Qt.rgba(rgb.r, rgb.g, rgb.b, a)
+    }
+
     //  creates a full color string from color value and alpha[0..1], e.g. "#FF00FF00"
     function _fullColorString(clr, a) {
         return "#" + ((Math.ceil(a*255) + 256).toString(16).substr(1, 2) + clr.toString().substr(1, 6)).toUpperCase()
@@ -242,14 +246,4 @@ Rectangle {
     function _getChannelStr(clr, channelIdx) {
         return parseInt(clr.toString().substr(channelIdx*2 + 1, 2), 16)
     }
-
-    /*
-    onPaletteModeChanged: {
-        if(palleteMode === true) {
-
-        } else {
-
-        }
-    }
-    */
 }
