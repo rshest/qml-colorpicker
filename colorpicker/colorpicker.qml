@@ -2,6 +2,7 @@
 import QtQuick 2.11
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
+import QtGraphicalEffects 1.12
 import "content"
 
 Rectangle {
@@ -31,67 +32,32 @@ Rectangle {
         linkColor: "white"
     }
 
-    /*
-    onEnablePaletteModeChanged: {
-        if(enablePaletteMode) {
-            console.debug('enablePaletteMode is set')
-            swipe.anchors.top = palette_switch.Bottom
-        } else {
-            console.debug('enablePaletteMode is not set')
-            swipe.anchors.top = colorPicker.Top
-        }
-    }
-    */
+    clip: true
 
-    SwipeView {
-        id: swipe
-        interactive: false
-        currentIndex: paletteMode ? 1 : 0
-        anchors.top: enablePaletteMode　? palette_switch.bottom : parent.top
+    RowLayout {
+        id: picker
+        anchors.top: (enablePaletteMode　? palette_switch.bottom : parent.top)
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.rightMargin: colorHandleRadius
         anchors.bottom: parent.bottom
-        //:
+        spacing: 0
 
-        clip: true
-/*
-        property int child_x: 0
-        property int child_y: 0
-        property int child_width: 0
-        property int child_height: 0
-*/
-        RowLayout {
-            id: picker
-            //anchors.rightMargin: colorHandleRadius // loop?
+        SwipeView {
+            id: swipe
+            clip: true
+            interactive: false
+            currentIndex: paletteMode ? 1 : 0
 
-            //x: Math.round(parent.width / 2 - implicitWidth / 2)
-            //y: Math.round(parent.height / 2 - implicitHeight / 2)
-//            width: colorHandleRadius* 2 + sbPicker.implicitWidth + huePicker.implicitWidth + alphaPicker.implicitWidth + detailColumn.implicitWidth
-//            height: colorHandleRadius* 2 + sbPicker.implicitHeight
-//            anchors.fill: parent
-            //anchors.margins: colorHandleRadius
-            spacing: 3
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
-            // saturation/brightness picker box
             SBPicker {
-
                 id: sbPicker
 
-                height: parent.height
-                width: implicitWidth
-                Layout.fillWidth: true
-                Layout.preferredWidth: implicitWidth
-                Layout.preferredHeight: height
+                height: parent.implicitHeight
+                width: parent.implicitContentWidth
 
-                //anchors.topMargin: colorHandleRadius
-                //anchors.bottomMargin: colorHandleRadius
-                //width: _getContentHeight()
-                //Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-//                Layout.leftMargin: colorHandleRadius
-//                Layout.topMargin: colorHandleRadius * 2
-//                Layout.bottomMargin: colorHandleRadius * 2
-//                Layout.fillHeight: true
-                //Layout.fillWidth: true
                 hueColor: {
                     var v = 1.0-hueSlider.value
                     console.debug("v:"+v)
@@ -114,156 +80,146 @@ Rectangle {
                     }
                 }
             }
+            RowLayout {
+                height: parent.implicitHeight
+                width: parent.implicitContentWidth
 
-            // hue picking slider
-            Item {
-                id: huePicker
-                width: 12
-                Layout.fillHeight: true
-                Layout.topMargin: colorHandleRadius
-                Layout.bottomMargin: colorHandleRadius
-                //Layout.fillHeight: true
-//                Layout.topMargin: colorHandleRadius * 2
-//                Layout.bottomMargin: colorHandleRadius * 2
+                Palettes {
 
-                Rectangle {
-                    anchors.fill: parent
-                    id: colorBar
-                    gradient: Gradient {
-                        GradientStop { position: 1.0;  color: "#FF0000" }
-                        GradientStop { position: 0.85; color: "#FFFF00" }
-                        GradientStop { position: 0.76; color: "#00FF00" }
-                        GradientStop { position: 0.5;  color: "#00FFFF" }
-                        GradientStop { position: 0.33; color: "#0000FF" }
-                        GradientStop { position: 0.16; color: "#FF00FF" }
-                        GradientStop { position: 0.0;  color: "#FF0000" }
-                    }
-                }
-                ColorSlider {
-                    id: hueSlider; anchors.fill: parent
                 }
             }
+        }
 
-            // alpha (transparency) picking slider
-            Item {
-                id: alphaPicker
+        // hue picking slider
+        Item {
+            id: huePicker
+            visible: !paletteMode
+            width: 12
+            Layout.fillHeight: true
+            Layout.topMargin: colorHandleRadius
+            Layout.bottomMargin: colorHandleRadius
+
+            Rectangle {
+                anchors.fill: parent
+                id: colorBar
+                gradient: Gradient {
+                    GradientStop { position: 1.0;  color: "#FF0000" }
+                    GradientStop { position: 0.85; color: "#FFFF00" }
+                    GradientStop { position: 0.76; color: "#00FF00" }
+                    GradientStop { position: 0.5;  color: "#00FFFF" }
+                    GradientStop { position: 0.33; color: "#0000FF" }
+                    GradientStop { position: 0.16; color: "#FF00FF" }
+                    GradientStop { position: 0.0;  color: "#FF0000" }
+                }
+            }
+            ColorSlider {
+                id: hueSlider; anchors.fill: parent
+            }
+        }
+
+        // alpha (transparency) picking slider
+        Item {
+            id: alphaPicker
+            visible: enableAlphaChannel
+            width: 12
+            Layout.leftMargin: 4
+            Layout.fillHeight: true
+            Layout.topMargin: colorHandleRadius
+            Layout.bottomMargin: colorHandleRadius
+            Checkerboard { cellSide: 4 }
+            //  alpha intensity gradient background
+            Rectangle {
+                anchors.fill: parent
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#FF000000" }
+                    GradientStop { position: 1.0; color: "#00000000" }
+                }
+            }
+            ColorSlider {
+                id: alphaSlider; anchors.fill: parent
+            }
+        }
+
+        // details column
+        Column {
+            id: detailColumn
+            Layout.leftMargin: 4
+            Layout.fillHeight: true
+            Layout.topMargin: colorHandleRadius
+            Layout.bottomMargin: colorHandleRadius
+            Layout.alignment: Qt.AlignRight
+            visible: enableDetails
+
+            // current color/alpha display rectangle
+            PanelBorder {
+                width: parent.width
+                height: 30
                 visible: enableAlphaChannel
-                width: 12
-                Layout.fillHeight: true
-//                height: parent.height - colorHandleRadius*2
-                Layout.topMargin: colorHandleRadius
-                Layout.bottomMargin: colorHandleRadius
-                //Layout.fillHeight: true
-//                Layout.topMargin: colorHandleRadius * 2
-//                Layout.bottomMargin: colorHandleRadius * 2
-                Checkerboard { cellSide: 4 }
-                //  alpha intensity gradient background
+                Checkerboard { cellSide: 5 }
                 Rectangle {
-                    anchors.fill: parent
-                    gradient: Gradient {
-                        GradientStop { position: 0.0; color: "#FF000000" }
-                        GradientStop { position: 1.0; color: "#00000000" }
-                    }
+                    width: parent.width; height: 30
+                    border.width: 1; border.color: "black"
+                    color: colorPicker.colorValue
                 }
-                ColorSlider { id: alphaSlider; anchors.fill: parent }
             }
 
-            // details column
+            // "#XXXXXXXX" color value box
+            PanelBorder {
+                id: colorEditBox
+                height: 15; width: parent.width
+                TextInput {
+                    anchors.fill: parent
+                    color: "#AAAAAA"
+                    selectionColor: "#FF7777AA"
+                    font.pixelSize: 11
+                    maximumLength: 9
+                    focus: false
+                    text: _fullColorString(colorPicker.colorValue, alphaSlider.value)
+                    selectByMouse: true
+                }
+            }
+
+            // H, S, B color values boxes
             Column {
-                id: detailColumn
-                Layout.fillHeight: true
-//                Layout.fillWidth: true
-//                height: parent.height - colorHandleRadius*2
-                Layout.topMargin: colorHandleRadius
-                Layout.bottomMargin: colorHandleRadius
-                Layout.alignment: Qt.AlignRight
-                Layout.rightMargin: colorHandleRadius
-                //Layout.fillHeight: true
-//                Layout.topMargin: colorHandleRadius * 2
-//                Layout.bottomMargin: colorHandleRadius * 2
-                spacing: 4
-                visible: enableDetails
-                //width: 100
+                width: parent.width
+                NumberBox { caption: "H:"; value: hueSlider.value.toFixed(2) }
+                NumberBox { caption: "S:"; value: sbPicker.saturation.toFixed(2) }
+                NumberBox { caption: "B:"; value: sbPicker.brightness.toFixed(2) }
+            }
 
-                // current color/alpha display rectangle
-                PanelBorder {
-                    width: parent.width
-                    height: 30
-                    visible: enableAlphaChannel
-                    Checkerboard { cellSide: 5 }
-                    Rectangle {
-                        width: parent.width; height: 30
-                        border.width: 1; border.color: "black"
-                        color: colorPicker.colorValue
-                    }
-                }
+            // filler rectangle
+            Rectangle {
+                width: parent.width; height: 5
+                color: "transparent"
+            }
 
-                // "#XXXXXXXX" color value box
-                PanelBorder {
-                    id: colorEditBox
-                    height: 15; width: parent.width
-                    TextInput {
-                        anchors.fill: parent
-                        color: "#AAAAAA"
-                        selectionColor: "#FF7777AA"
-                        font.pixelSize: 11
-                        maximumLength: 9
-                        focus: false
-                        text: _fullColorString(colorPicker.colorValue, alphaSlider.value)
-                        selectByMouse: true
-                    }
-                }
-
-                // H, S, B color values boxes
-                Column {
-                    width: parent.width
-                    NumberBox { caption: "H:"; value: hueSlider.value.toFixed(2) }
-                    NumberBox { caption: "S:"; value: sbPicker.saturation.toFixed(2) }
-                    NumberBox { caption: "B:"; value: sbPicker.brightness.toFixed(2) }
-                }
-
-                // filler rectangle
-                Rectangle {
-                    width: parent.width; height: 5
-                    color: "transparent"
-                }
-
-                // R, G, B color values boxes
-                Column {
-                    width: parent.width
-                    NumberBox {
-                        caption: "R:"
-                        value: _getChannelStr(colorPicker.colorValue, 0)
-                        min: 0; max: 255
-                    }
-                    NumberBox {
-                        caption: "G:"
-                        value: _getChannelStr(colorPicker.colorValue, 1)
-                        min: 0; max: 255
-                    }
-                    NumberBox {
-                        caption: "B:"
-                        value: _getChannelStr(colorPicker.colorValue, 2)
-                        min: 0; max: 255
-                    }
-                }
-
-                // alpha value box
+            // R, G, B color values boxes
+            Column {
+                width: parent.width
                 NumberBox {
-                    visible: enableAlphaChannel
-                    caption: "A:"; value: Math.ceil(alphaSlider.value*255)
+                    caption: "R:"
+                    value: _getChannelStr(colorPicker.colorValue, 0)
+                    min: 0; max: 255
+                }
+                NumberBox {
+                    caption: "G:"
+                    value: _getChannelStr(colorPicker.colorValue, 1)
+                    min: 0; max: 255
+                }
+                NumberBox {
+                    caption: "B:"
+                    value: _getChannelStr(colorPicker.colorValue, 2)
                     min: 0; max: 255
                 }
             }
-        }
 
-        Item {
-
-            Label {
-                text:"a"
+            // alpha value box
+            NumberBox {
+                visible: enableAlphaChannel
+                caption: "A:"; value: Math.ceil(alphaSlider.value*255)
+                min: 0; max: 255
             }
         }
-
     }
 
     //  creates color value from hue, saturation, brightness, alpha
@@ -286,4 +242,14 @@ Rectangle {
     function _getChannelStr(clr, channelIdx) {
         return parseInt(clr.toString().substr(channelIdx*2 + 1, 2), 16)
     }
+
+    /*
+    onPaletteModeChanged: {
+        if(palleteMode === true) {
+
+        } else {
+
+        }
+    }
+    */
 }
