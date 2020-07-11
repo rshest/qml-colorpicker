@@ -15,6 +15,9 @@ Rectangle {
     property int colorHandleRadius : 8
     property bool paletteMode : false
     property bool enablePaletteMode : false
+    property string switchToPalleteLink: "<a href=\".\">Color Picker...</a>"
+    property string switchToColorPickerLink: "<a href=\".\">Palette...</a>"
+
     signal colorChanged(color changedColor)
 
     width: 400; height: 200
@@ -23,7 +26,7 @@ Rectangle {
     Text {
         id: palette_switch
         textFormat: Text.StyledText
-        text: paletteMode ? "<a href=\".\">Color Picker...</a>" : "<a href=\".\">Palette...</a>"
+        text: paletteMode ? switchToColorPickerLink : switchToPalleteLink
         visible: enablePaletteMode
         onLinkActivated: {
             paletteMode = !paletteMode
@@ -85,8 +88,8 @@ Rectangle {
 
             Palettes {
                 id:paletts
-//                anchors.top: parent.top
-//                anchors.topMargin: 20
+                anchors.fill: parent
+                id: paletts
             }
         }
 
