@@ -15,8 +15,8 @@ Rectangle {
     property int colorHandleRadius : 8
     property bool paletteMode : false
     property bool enablePaletteMode : false
-    property string switchToPalleteLink: "<a href=\".\">Color Picker...</a>"
-    property string switchToColorPickerLink: "<a href=\".\">Palette...</a>"
+    property string switchToPalleteString: "Color Picker"
+    property string switchToColorPickerString: "Palette..."
 
     signal colorChanged(color changedColor)
 
@@ -26,7 +26,9 @@ Rectangle {
     Text {
         id: palette_switch
         textFormat: Text.StyledText
-        text: paletteMode ? switchToColorPickerLink : switchToPalleteLink
+        text: paletteMode ?
+                  "<a href=\".\"" + switchToColorPickerString + "</a>" :
+                  "<a href=\".\"" + switchToPalleteString + "</a>"
         visible: enablePaletteMode
         onLinkActivated: {
             paletteMode = !paletteMode
@@ -236,7 +238,12 @@ Rectangle {
     }
 
     function _rgb(rgb, a) {
-        return Qt.rgba(rgb.r, rgb.g, rgb.b, a)
+
+        var c = Qt.rgba(rgb.r, rgb.g, rgb.b, a)
+
+        colorChanged(c)
+
+        return c
     }
 
     //  creates a full color string from color value and alpha[0..1], e.g. "#FF00FF00"
