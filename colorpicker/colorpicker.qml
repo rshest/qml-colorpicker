@@ -1,8 +1,7 @@
 //  A toy QML colorpicker control, by Ruslan Shestopalyuk
 import QtQuick 2.11
-import QtQuick.Layouts 1.11
+import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.4
-import QtGraphicalEffects 1.12
 import "content"
 
 Rectangle {
@@ -38,7 +37,7 @@ Rectangle {
 
     RowLayout {
         id: picker
-        anchors.top: (enablePaletteMode　? palette_switch.bottom : parent.top)
+        anchors.top: enablePaletteMode　? palette_switch.bottom : parent.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.rightMargin: colorHandleRadius
@@ -49,7 +48,8 @@ Rectangle {
             id: swipe
             clip: true
             interactive: false
-            currentIndex: paletteMode ? 1 : 0
+//            currentIndex: paletteMode ? 1 : 0
+            currentIndex: 1
 
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -58,7 +58,7 @@ Rectangle {
                 id: sbPicker
 
                 height: parent.implicitHeight
-                width: parent.implicitContentWidth
+                width: parent.implicitWidth
 
                 hueColor: {
                     var v = 1.0-hueSlider.value
@@ -85,8 +85,8 @@ Rectangle {
 
             Palettes {
                 id:paletts
-                anchors.top: parent.top
-                anchors.topMargin: 20
+//                anchors.top: parent.top
+//                anchors.topMargin: 20
             }
         }
 
