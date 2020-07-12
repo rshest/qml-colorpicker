@@ -15,8 +15,8 @@ Rectangle {
     property int colorHandleRadius : 8
     property bool paletteMode : false
     property bool enablePaletteMode : false
-    property string switchToColorPickerString: "Color Picker..."
-    property string switchToPalleteString: "Palette..."
+    property string switchToColorPickerString: "Palette..."
+    property string switchToPalleteString: "Color Picker..."
 
     signal colorChanged(color changedColor)
 
