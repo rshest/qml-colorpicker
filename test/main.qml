@@ -70,6 +70,12 @@ Window {
                 my_picker.enablePaletteMode = checked
             }
         }
+        Button {
+            text:"alfa reset"
+            onClicked: {
+                my_picker.visible = ! my_picker.visible
+            }
+        }
     }
 
     Colorpicker {
