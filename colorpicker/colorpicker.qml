@@ -183,6 +183,7 @@ Rectangle {
 
             // H, S, B color values boxes
             Column {
+                visible: !paletteMode
                 width: parent.width
                 NumberBox { caption: "H:"; value: hueSlider.value.toFixed(2) }
                 NumberBox { caption: "S:"; value: sbPicker.saturation.toFixed(2) }
@@ -237,6 +238,7 @@ Rectangle {
         return c
     }
 
+    // create rgb value
     function _rgb(rgb, a) {
 
         var c = Qt.rgba(rgb.r, rgb.g, rgb.b, a)
@@ -250,6 +252,7 @@ Rectangle {
     function _fullColorString(clr, a) {
         return "#" + ((Math.ceil(a*255) + 256).toString(16).substr(1, 2) + clr.toString().substr(1, 6)).toUpperCase()
     }
+
     //  extracts integer color channel value [0..255] from color value
     function _getChannelStr(clr, channelIdx) {
         return parseInt(clr.toString().substr(channelIdx*2 + 1, 2), 16)
