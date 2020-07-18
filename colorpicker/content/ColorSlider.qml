@@ -34,5 +34,11 @@ Item {
         }
         onPressed: handleMouse(mouse)
     }
+
+    onVisibleChanged: {
+        if(visible) {
+            pickerCursor.y = -cursorHeight*0.5
+        }
+    }
 }
 
