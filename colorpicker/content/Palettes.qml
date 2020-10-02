@@ -16,6 +16,16 @@ Item {
             id: group
         }
 
+        // row 0
+        Palette {
+            ButtonGroup.group: group
+            target_color: "black"
+            onCheckedChanged: {
+                if(checked) {
+                    item.paletts_color = target_color
+                }
+            }
+        }
         Palette {
             ButtonGroup.group: group
             target_color: "#705958"
@@ -61,7 +71,6 @@ Item {
                 }
             }
         }
-
         Palette {
             ButtonGroup.group: group
             target_color: "#c978b8"
@@ -83,6 +92,17 @@ Item {
         Palette {
             ButtonGroup.group: group
             target_color: "#750161"
+            onCheckedChanged: {
+                if(checked) {
+                    item.paletts_color = target_color
+                }
+            }
+        }
+
+        // row 1
+        Palette {
+            ButtonGroup.group: group
+            target_color: "gray"
             onCheckedChanged: {
                 if(checked) {
                     item.paletts_color = target_color
@@ -161,6 +181,17 @@ Item {
                 }
             }
         }
+
+        // row 2
+        Palette {
+            ButtonGroup.group: group
+            target_color: "darkgray"
+            onCheckedChanged: {
+                if(checked) {
+                    item.paletts_color = target_color
+                }
+            }
+        }
         Palette {
             ButtonGroup.group: group
             target_color: "#5188ca"
@@ -170,7 +201,6 @@ Item {
                 }
             }
         }
-
         Palette {
             ButtonGroup.group: group
             target_color: "blue"
@@ -234,6 +264,17 @@ Item {
                 }
             }
         }
+
+        // row 3
+        Palette {
+            ButtonGroup.group: group
+            target_color: "lightgray"
+            onCheckedChanged: {
+                if(checked) {
+                    item.paletts_color = target_color
+                }
+            }
+        }
         Palette {
             ButtonGroup.group: group
             target_color: "#56c222"
@@ -243,7 +284,6 @@ Item {
                 }
             }
         }
-
         Palette {
             ButtonGroup.group: group
             target_color: "green"
@@ -289,7 +329,6 @@ Item {
                 }
             }
         }
-
         Palette {
             ButtonGroup.group: group
             target_color: "#cdc101"
@@ -302,6 +341,17 @@ Item {
         Palette {
             ButtonGroup.group: group
             target_color: "#a39700"
+            onCheckedChanged: {
+                if(checked) {
+                    item.paletts_color = target_color
+                }
+            }
+        }
+
+        // row 4
+        Palette {
+            ButtonGroup.group: group
+            target_color: "white"
             onCheckedChanged: {
                 if(checked) {
                     item.paletts_color = target_color
