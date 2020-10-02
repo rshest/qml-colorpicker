@@ -6,27 +6,27 @@ CheckBox {
     text: ""
     transformOrigin: Item.Center
     property color target_color : "#21be2b"
-    property color border_color : "darkgray"
+    property color border_color : "gainsboro"
     property color selected_border_color : "white"
     padding: 0
-    width: 32
+    width: 30
     height: 32
 
     indicator: Rectangle {
-        implicitWidth: 25
+        implicitWidth: 23
         implicitHeight: 25
         anchors.margins: 0
 
         x: control.leftPadding
         y: 0
-        width: 32
+        width: 30
         height: 32
         radius: 3
         border.color: (checked ? selected_border_color : border_color)
-        border.width: 5
+        border.width: 4
 
         Rectangle {
-            width: 20
+            width: 18
             height: 20
             x: 6
             y: 6
