@@ -4,8 +4,8 @@ import QtQuick 2.11
 Item {
     id: root
     property color hueColor : "blue"
-    property real saturation : pickerCursor.x/width
-    property real brightness : 1 - pickerCursor.y/height
+    property real saturation : pickerCursor.x/(width-2*r)
+    property real brightness : 1 - pickerCursor.y/(height-2*r)
     property int r : colorHandleRadius
 
     Rectangle {
