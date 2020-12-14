@@ -176,7 +176,7 @@ Rectangle {
                     font.pixelSize: 11
                     maximumLength: 9
                     focus: false
-                    text: _fullColorString(colorPicker.colorValue, alphaSlider.value)
+                    text: _fullColorString(colorPicker.colorValue)
                     selectByMouse: true
                 }
             }
@@ -249,8 +249,11 @@ Rectangle {
     }
 
     //  creates a full color string from color value and alpha[0..1], e.g. "#FF00FF00"
-    function _fullColorString(clr, a) {
-        return "#" + ((Math.ceil(a*255) + 256).toString(16).substr(1, 2) + clr.toString().substr(1, 6)).toUpperCase()
+    function _fullColorString(clr) {
+        return "#" + ((Math.ceil(clr.a*255)+256).toString(16).substr(1, 2).toUpperCase() +
+                      (Math.ceil(clr.r*255)+256).toString(16).substr(1, 2).toUpperCase() +
+                      (Math.ceil(clr.g*255)+256).toString(16).substr(1, 2).toUpperCase() +
+                      (Math.ceil(clr.b*255)+256).toString(16).substr(1, 2).toUpperCase());
     }
 
     //  extracts integer color channel value [0..255] from color value
