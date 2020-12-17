@@ -17,6 +17,7 @@ Rectangle {
     property bool enablePaletteMode : false
     property string switchToColorPickerString: "Palette..."
     property string switchToPalleteString: "Color Picker..."
+    property bool readOnly:true
 
     signal colorChanged(color changedColor)
 
@@ -178,6 +179,10 @@ Rectangle {
                     focus: false
                     text: _fullColorString(colorPicker.colorValue)
                     selectByMouse: true
+                    readOnly: colorPicker.readOnly
+                    onEditingFinished: {
+                        setColorValue(text);
+                    }
                 }
             }
 
@@ -185,9 +190,40 @@ Rectangle {
             Column {
                 visible: !paletteMode
                 width: parent.width
-                NumberBox { caption: "H:"; value: hueSlider.value.toFixed(2) }
-                NumberBox { caption: "S:"; value: sbPicker.saturation.toFixed(2) }
-                NumberBox { caption: "B:"; value: sbPicker.brightness.toFixed(2) }
+                NumberBox {
+                    id: _h
+                    caption: "H:";
+                    value: hueSlider.value.toFixed(2);
+                    readOnly: colorPicker.readOnly
+                    onTextChanged: {
+                        var c=colorPicker.colorValue
+                        var newValue=Qt.hsla(_h.value,c.hslSaturation,
+                                             c.hslLightness,c.a)
+                        setColorValue(newValue)
+                    }
+                }
+                NumberBox {
+                    id: _s
+                    caption: "S:";
+                    value: sbPicker.saturation.toFixed(2);
+                    readOnly: colorPicker.readOnly
+                    onTextChanged: {
+                        var newValue=_hsla(hueSlider.value, _s.value,
+                                           sbPicker.brightness, alphaSlider.value)
+                        setColorValue(newValue)
+                    }
+                }
+                NumberBox {
+                    id: _b
+                    caption: "B:";
+                    value: sbPicker.brightness.toFixed(2);
+                    readOnly: colorPicker.readOnly
+                    onTextChanged: {
+                        var newValue=_hsla(hueSlider.value, sbPicker.saturation,
+                                           _b.value, alphaSlider.value)
+                       setColorValue(newValue)
+                    }
+                }
             }
 
             // filler rectangle
@@ -200,27 +236,56 @@ Rectangle {
             Column {
                 width: parent.width
                 NumberBox {
+                    id: _r
                     caption: "R:"
-                    value: _getChannelStr(colorPicker.colorValue, 0)
-                    min: 0; max: 255
+                   value: Math.ceil(colorPicker.colorValue.r*255)
+                   min: 0; max: 255
+                   readOnly: colorPicker.readOnly
+                   onTextChanged: {
+                       var c= colorPicker.colorValue
+                       var newValue=Qt.rgba(_r.value/255.0,c.g,c.b,c.a)
+                       setColorValue(newValue)
+                   }
                 }
                 NumberBox {
+                    id:_g
                     caption: "G:"
-                    value: _getChannelStr(colorPicker.colorValue, 1)
+                    value: Math.ceil(colorPicker.colorValue.g*255)
                     min: 0; max: 255
+                    readOnly: colorPicker.readOnly
+                    onTextChanged: {
+                        var c= colorPicker.colorValue
+                        var newValue=Qt.rgba(c.r,_g.value/255.0,c.b,c.a)
+                        setColorValue(newValue)
+                    }
                 }
                 NumberBox {
+                    id: _b1
                     caption: "B:"
-                    value: _getChannelStr(colorPicker.colorValue, 2)
+                    value: Math.ceil(colorPicker.colorValue.b*255)
                     min: 0; max: 255
+                    readOnly: colorPicker.readOnly
+                    onTextChanged: {
+                        var c= colorPicker.colorValue
+                        var newValue=Qt.rgba(c.r,c.g,_b1.value/255.0,c.a)
+                        setColorValue(newValue)
+                    }
                 }
             }
 
             // alpha value box
             NumberBox {
+                id:_a
                 visible: enableAlphaChannel
-                caption: "A:"; value: Math.ceil(alphaSlider.value*255)
+                caption: "A:";
+                value: Math.ceil(alphaSlider.value*255)
                 min: 0; max: 255
+                readOnly: colorPicker.readOnly
+                onTextChanged: {
+                    var c= colorPicker.colorValue
+                    var newValue=Qt.rgba(c.r,c.g,c.b,_a.value/255.0)
+                    setColorValue(newValue)
+                }
             }
         }
     }
@@ -256,8 +321,33 @@ Rectangle {
                       (Math.ceil(clr.b*255)+256).toString(16).substr(1, 2).toUpperCase());
     }
 
-    //  extracts integer color channel value [0..255] from color value
-    function _getChannelStr(clr, channelIdx) {
-        return parseInt(clr.toString().substr(channelIdx*2 + 1, 2), 16)
+    // return color value from string #XXXXXXXX
+    function _getColorFromStr(clr) {
+        var a=parseInt(clr.toString().substr(1, 2), 16)/255.0;
+        var r=parseInt(clr.toString().substr(3, 2), 16)/255.0;
+        var g=parseInt(clr.toString().substr(5, 2), 16)/255.0;
+        var b=parseInt(clr.toString().substr(7, 2), 16)/255.0;
+        return Qt.rgba(r,g,b,a);
+    }
+    //Set colorValue from string #XXXXXXXX
+    function setColorValue(clr)
+    {
+        var c = _getColorFromStr(clr);
+        hueSlider.setValue(c.hslHue)
+        alphaSlider.setValue(c.a)
+        var light=c.hslLightness*2;
+        var y,x
+        if(light<=1)
+        {
+            y=c.hslLightness*(c.hslSaturation+1)
+            x=c.hslSaturation*light/y;
+        }
+        else
+        {
+            y=c.hslLightness*(1-c.hslSaturation)+c.hslSaturation
+            x=2*c.hslSaturation*(1-c.hslLightness)/y
+        }
+        sbPicker.setSaturation(x);
+        sbPicker.setBrightness(y);
     }
 }

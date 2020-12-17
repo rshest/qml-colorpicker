@@ -58,5 +58,12 @@ Item {
         onPositionChanged: handleMouse(mouse)
         onPressed: handleMouse(mouse)
     }
+    function setSaturation(value) {
+        pickerCursor.x=value*(root.width-2*r)
+    }
+    function setBrightness(value) {
+        pickerCursor.y=(1-value)*(root.height-2*r)
+    }
+
 }
 
