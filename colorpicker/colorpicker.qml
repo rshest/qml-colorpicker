@@ -238,14 +238,14 @@ Rectangle {
                 NumberBox {
                     id: _r
                     caption: "R:"
-                   value: Math.ceil(colorPicker.colorValue.r*255)
-                   min: 0; max: 255
-                   readOnly: colorPicker.readOnly
-                   onTextChanged: {
-                       var c= colorPicker.colorValue
-                       var newValue=Qt.rgba(_r.value/255.0,c.g,c.b,c.a)
-                       setColorValue(newValue)
-                   }
+                    value: Math.ceil(colorPicker.colorValue.r*255)
+                    min: 0; max: 255
+                    readOnly: colorPicker.readOnly
+                    onTextChanged: {
+                        var c= colorPicker.colorValue
+                        var newValue=Qt.rgba(_r.value/255.0,c.g,c.b,c.a)
+                        setColorValue(newValue)
+                    }
                 }
                 NumberBox {
                     id:_g
@@ -333,6 +333,7 @@ Rectangle {
     function setColorValue(clr)
     {
         var c = _getColorFromStr(clr);
+        paletts.setColor(c);
         hueSlider.setValue(c.hslHue)
         alphaSlider.setValue(c.a)
         var light=c.hslLightness*2;
