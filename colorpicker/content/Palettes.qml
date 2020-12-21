@@ -4,6 +4,11 @@ import QtQuick.Controls 2.4
 Item {
     id: item
     property color paletts_color : "transparent"
+    function setColor(clr) {
+        _export.target_color = clr
+        _export.checked=false
+        _export.checked=true
+    }
 
     Grid {
         id: grid
@@ -90,6 +95,7 @@ Item {
             }
         }
         Palette {
+            id: _export
             ButtonGroup.group: group
             target_color: "#750161"
             onCheckedChanged: {
