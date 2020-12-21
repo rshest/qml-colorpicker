@@ -7,7 +7,7 @@ Window {
     id: window
     visible: true
     width: 400
-    height: 350
+    height: 400
     title: qsTr("Hello Colorpicker")
 
     GridLayout {
@@ -15,7 +15,7 @@ Window {
         anchors.left: parent.left
         columnSpacing: 1
         rowSpacing: 1
-        rows: 4
+        rows: 5
         flow: GridLayout.TopToBottom
 
         Label {
@@ -41,19 +41,21 @@ Window {
                 my_picker.enableDetails = checked
             }
         }
-        Row {
-            Layout.topMargin: 10
-            Button {
-                width: 40
-                height: 20
-                background: Rectangle {
-                    color: my_picker.colorValue
-                }
-            }
-            Label {
-                text: "Defined Color"
+        CheckBox {
+            id: readOnly
+            text: "Read only"
+            checked: true
+            onClicked : {
+                my_picker.readOnly = checked
             }
         }
+        Button {
+            text:"alfa reset"
+            onClicked: {
+                my_picker.visible = ! my_picker.visible
+            }
+        }
+
         CheckBox {
             id: paletteMode
             text: "Palette Mode"
@@ -70,10 +72,35 @@ Window {
                 my_picker.enablePaletteMode = checked
             }
         }
-        Button {
-            text:"alfa reset"
-            onClicked: {
-                my_picker.visible = ! my_picker.visible
+        RowLayout {
+            Rectangle {
+                width: 40
+                height: 20
+                color: my_picker.colorValue
+            }
+            Label {
+                text: "Defined Color"
+            }
+        }
+
+        Row {
+            Layout.alignment: Qt.AlignVCenter
+            TextField {
+                id:_colorValue
+                text: "#FFFFFFFF"
+                selectByMouse: true
+                validator: RegExpValidator { regExp: /^#[a-fA-F0-9]{8}/ }
+                width:100
+                onEditingFinished: {
+                    my_picker.setColorValue(_colorValue.text)
+                }
+
+            }
+            Button {
+                text:"set color"
+                onClicked: {
+                     my_picker.setColorValue(_colorValue.text)
+                }
             }
         }
     }

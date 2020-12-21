@@ -2,11 +2,14 @@
 import QtQuick 2.11
 
 Row {
+    id:root
     property alias  caption: captionBox.text
     property alias  value: inputBox.text
     property alias  min: numValidator.bottom
     property alias  max: numValidator.top
     property alias  decimals: numValidator.decimals
+    property alias readOnly: inputBox.readOnly
+    signal textChanged(string text)
 
     width: 80;
     height: 15
@@ -32,7 +35,13 @@ Row {
                 id: numValidator
                 bottom: 0; top: 1; decimals: 2
                 notation: DoubleValidator.StandardNotation
+                locale: "c"
             }
+            onEditingFinished: {
+                root.textChanged(inputBox.text)
+            }
+
+
         }
     }
 }

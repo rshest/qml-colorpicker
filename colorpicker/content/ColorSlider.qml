@@ -40,5 +40,8 @@ Item {
             pickerCursor.y = -cursorHeight*0.5
         }
     }
+    function setValue(value) {
+        pickerCursor.y = (1- value)*height;
+    }
 }
 
