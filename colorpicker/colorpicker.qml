@@ -6,10 +6,7 @@ import "content"
 
 Rectangle {
     id: colorPicker
-    property color colorValue: paletteMode ?
-                                   _rgb(paletts.paletts_color, alphaSlider.value) :
-                                   _hsla(hueSlider.value, sbPicker.saturation,
-                                    sbPicker.brightness, alphaSlider.value)
+    property color colorValue: "transparent"
     property bool enableAlphaChannel: true
     property bool enableDetails: true
     property int colorHandleRadius : 8
@@ -17,6 +14,14 @@ Rectangle {
     property bool enablePaletteMode : false
     property string switchToColorPickerString: "Palette..."
     property string switchToPalleteString: "Color Picker..."
+
+    property color _changingColorValue : paletteMode ?
+                                   _rgb(paletts.paletts_color, alphaSlider.value) :
+                                   _hsla(hueSlider.value, sbPicker.saturation,
+                                    sbPicker.brightness, alphaSlider.value)
+    on_ChangingColorValueChanged: {
+        colorValue = _changingColorValue
+    }
 
     signal colorChanged(color changedColor)
 
@@ -256,5 +261,20 @@ Rectangle {
     //  extracts integer color channel value [0..255] from color value
     function _getChannelStr(clr, channelIdx) {
         return parseInt(clr.toString().substr(channelIdx*2 + 1, 2), 16)
+    }
+
+    // set color from outside
+    function setColor(color) {
+
+        // color object
+        var c = Qt.tint(color, "transparent")
+
+        console.debug('set_color is called with:'+c)
+
+        // set alpha
+        alphaSlider.setValue(c.a)
+
+        // set rgb. Now it's insufficient to update hue related component.
+        colorPicker.colorValue = c
     }
 }
