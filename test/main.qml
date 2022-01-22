@@ -9,6 +9,7 @@ Window {
     width: 400
     height: 350
     title: qsTr("Hello Colorpicker")
+    property color captured_color: "transparent"
 
     GridLayout {
         anchors.top: parent.top
@@ -41,17 +42,32 @@ Window {
                 my_picker.enableDetails = checked
             }
         }
-        Row {
-            Layout.topMargin: 10
-            Button {
-                width: 40
-                height: 20
-                background: Rectangle {
-                    color: my_picker.colorValue
+        Column {
+            Row {
+                Layout.topMargin: 10
+                Button {
+                    width: 40
+                    height: 20
+                    background: Rectangle {
+                        color: my_picker.colorValue
+                    }
+                }
+                Label {
+                    text: "Defined Color"
                 }
             }
-            Label {
-                text: "Defined Color"
+            Row {
+                Layout.topMargin: 10
+                Button {
+                    width: 40
+                    height: 20
+                    background: Rectangle {
+                        color: captured_color
+                    }
+                }
+                Label {
+                    text: "Captured Color"
+                }
             }
         }
         CheckBox {
@@ -70,10 +86,20 @@ Window {
                 my_picker.enablePaletteMode = checked
             }
         }
-        Button {
-            text:"alfa reset"
-            onClicked: {
-                my_picker.visible = ! my_picker.visible
+        Column {
+            Button {
+                height: 20
+                text:"Capture color"
+                onClicked: {
+                    captured_color = my_picker.colorValue
+                }
+            }
+            Button {
+                height: 20
+                text:"Set captured color"
+                onClicked: {
+                    my_picker.setColor(captured_color)
+                }
             }
         }
     }
