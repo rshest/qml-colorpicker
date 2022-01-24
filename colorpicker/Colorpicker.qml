@@ -27,6 +27,7 @@ Rectangle {
 
     width: 400; height: 200
     color: "#3C3C3C"
+    clip: true
 
     Text {
         id: palette_switch
@@ -42,8 +43,6 @@ Rectangle {
         anchors.rightMargin: colorHandleRadius
         linkColor: "white"
     }
-
-    clip: true
 
     RowLayout {
         id: picker
