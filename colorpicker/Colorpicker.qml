@@ -61,12 +61,11 @@ Rectangle {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.minimumWidth: paletts.implicitWidth
+            Layout.minimumHeight: paletts.implicitHeight
 
             SBPicker {
                 id: sbPicker
-
-                height: parent.implicitHeight
-                width: parent.implicitWidth
 
                 hueColor: {
                     var v = 1.0-hueSlider.value
