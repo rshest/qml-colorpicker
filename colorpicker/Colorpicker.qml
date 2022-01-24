@@ -25,7 +25,8 @@ Rectangle {
 
     signal colorChanged(color changedColor)
 
-    width: 400; height: 200
+    implicitWidth: picker.implicitWidth
+    implicitHeight: palette_switch.implicitHeight + picker.implicitHeight
     color: "#3C3C3C"
     clip: true
 
