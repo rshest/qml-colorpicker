@@ -5,6 +5,9 @@ Item {
     id: item
     property color paletts_color : "transparent"
 
+    implicitHeight: grid.height
+    implicitWidth: grid.width
+
     Grid {
         id: grid
         rows: 5

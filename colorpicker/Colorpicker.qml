@@ -25,8 +25,10 @@ Rectangle {
 
     signal colorChanged(color changedColor)
 
-    width: 400; height: 200
+    implicitWidth: picker.implicitWidth
+    implicitHeight: palette_switch.implicitHeight + picker.implicitHeight
     color: "#3C3C3C"
+    clip: true
 
     Text {
         id: palette_switch
@@ -42,8 +44,6 @@ Rectangle {
         anchors.rightMargin: colorHandleRadius
         linkColor: "white"
     }
-
-    clip: true
 
     RowLayout {
         id: picker
@@ -62,12 +62,11 @@ Rectangle {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.minimumWidth: paletts.implicitWidth
+            Layout.minimumHeight: paletts.implicitHeight
 
             SBPicker {
                 id: sbPicker
-
-                height: parent.implicitHeight
-                width: parent.implicitWidth
 
                 hueColor: {
                     var v = 1.0-hueSlider.value
