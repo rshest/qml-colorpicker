@@ -6,7 +6,8 @@
         <file>content/PanelBorder.qml</file>
         <file>content/SBPicker.qml</file>
         <file>Colorpicker.qml</file>
-        <file>content/Palette.qml</file>
-        <file>content/Palettes.qml</file>
+        <file>content/SinglePalette.qml</file>
+        <file>content/Paletts.qml</file>
+        <file>content/SizeConfigrator.qml</file>
     </qresource>
 </RCC>

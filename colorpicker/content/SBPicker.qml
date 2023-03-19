@@ -1,5 +1,5 @@
 //  Saturation/brightness picking box
-import QtQuick 2.11
+import QtQuick
 
 Item {
     id: root
@@ -35,11 +35,11 @@ Item {
         Rectangle {
             width: r*2; height: r*2
             radius: r
-            border.color: "black"; border.width: 2
+            border.color: _activePalette.highlight; border.width: 2
             color: "transparent"
             Rectangle {
                 anchors.fill: parent; anchors.margins: 2;
-                border.color: "white"; border.width: 2
+                border.color: _activePalette.highlightedText; border.width: 2
                 radius: width/2
                 color: "transparent"
             }
@@ -49,14 +49,18 @@ Item {
         anchors.fill: parent
         x: r
         y: r
-        function handleMouse(mouse) {
+        function handleMouse(mouse: MouseEvent) {
             if (mouse.buttons & Qt.LeftButton) {
                 pickerCursor.x = Math.max(0, Math.min(width,  mouse.x) - 2 * r);
                 pickerCursor.y = Math.max(0, Math.min(height, mouse.y) - 2 * r);
+                mouse.accepted = true
             }
         }
-        onPositionChanged: handleMouse(mouse)
-        onPressed: handleMouse(mouse)
+        onPositionChanged: (mouse) => {
+            handleMouse(mouse)
+        }
+        onPressed: (mouse) => {
+            handleMouse(mouse)
+        }
     }
 }
-

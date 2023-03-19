@@ -1,115 +1,226 @@
-import QtQuick 2.9
-import QtQuick.Window 2.2
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.1
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
-Window {
+ApplicationWindow {
     id: window
     visible: true
     width: 400
     height: 350
     title: qsTr("Hello Colorpicker")
+
     property color captured_color: "transparent"
 
-    GridLayout {
+    property int fontPixelSize: 10
+    property int itemHeight: 28
+    property int buttonHeight: 26
+
+    Flickable {
+        id: flickable
+        clip: true
         anchors.top: parent.top
         anchors.left: parent.left
-        columnSpacing: 1
-        rowSpacing: 1
-        rows: 4
-        flow: GridLayout.TopToBottom
+        anchors.right:parent.right
+        height: 150
+        contentHeight: panel.implicitHeight
 
-        Label {
-            font.bold: true
-            text: "Colorpicker properties:"
-            Layout.columnSpan: 2
-            Layout.alignment: Qt.AlignHCenter
-        }
+        ScrollBar.vertical: ScrollBar { }
 
-        CheckBox {
-            id: colorDialogAlpha
-            text: "Show alpha channel"
-            checked: true
-            onClicked : {
-                my_picker.enableAlphaChannel = checked
+        Flow {
+            id: panel
+            anchors.fill: parent
+            padding: 5
+            spacing: 5
+
+            CheckBox {
+                id: colorDialogAlpha
+                text: "Show alpha channel"
+                font.pixelSize: fontPixelSize
+                checked: true
+                height: itemHeight
+                onClicked : {
+                    my_picker.enableAlphaChannel = checked
+                }
+                background: Rectangle {
+                    anchors.fill: parent
+                    border.width: 1
+                    border.color: "Gray"
+                    color: "transparent"
+                }
             }
-        }
-        CheckBox {
-            id: colorDialogDetail
-            text: "Show details"
-            checked: true
-            onClicked : {
-                my_picker.enableDetails = checked
+            CheckBox {
+                id: colorDialogDetail
+                text: "Show details"
+                font.pixelSize: fontPixelSize
+                checked: true
+                height: itemHeight
+                onClicked : {
+                    my_picker.enableDetails = checked
+                }
+                background: Rectangle {
+                    anchors.fill: parent
+                    border.width: 1
+                    border.color: "Gray"
+                    color: "transparent"
+                }
             }
-        }
-        Column {
-            Row {
-                Layout.topMargin: 10
-                Button {
-                    width: 40
-                    height: 20
-                    background: Rectangle {
+
+            CheckBox {
+                id: paletteMode
+                text: "Palette Mode"
+                font.pixelSize: fontPixelSize
+                checked: my_picker.paletteMode
+                height: itemHeight
+                onClicked : {
+                    my_picker.paletteMode = checked
+                }
+                background: Rectangle {
+                    anchors.fill: parent
+                    border.width: 1
+                    border.color: "Gray"
+                }
+            }
+
+            CheckBox {
+                id: paletteModeDefault
+                text: "Enable Palette Mode"
+                font.pixelSize: fontPixelSize
+                checked: my_picker.enablePaletteMode
+                height: itemHeight
+                onClicked : {
+                    my_picker.enablePaletteMode = checked
+                }
+                background: Rectangle {
+                    anchors.fill: parent
+                    border.width: 1
+                    border.color: "Gray"
+                    color: "transparent"
+                }
+            }
+
+            Rectangle {
+                border.width: 1
+                border.color: "Gray"
+                color: "transparent"
+                width: capture_color.implicitWidth
+                height: capture_color.implicitHeight
+                Row {
+                    id: capture_color
+                    height: itemHeight
+                    spacing: 5
+                    rightPadding: 5
+                    leftPadding: 5
+                    anchors.verticalCenter: parent.verticalCenter
+                    Rectangle {
+                        width: 40
+                        height: 15
                         color: my_picker.colorValue
+                        border.color: activePalette.highlight
+                        border.width: 1
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Button {
+                        height: buttonHeight
+                        text: "Get"
+                        font.pixelSize: fontPixelSize
+                        onClicked: {
+                            captured_color = my_picker.colorValue
+                        }
                     }
                 }
-                Label {
-                    text: "Defined Color"
-                }
             }
-            Row {
-                Layout.topMargin: 10
-                Button {
-                    width: 40
-                    height: 20
-                    background: Rectangle {
+
+            Rectangle {
+                border.width: 1
+                border.color: "Gray"
+                color: "transparent"
+                width: captured.implicitWidth
+                height: captured.implicitHeight
+                Row {
+                    id: captured
+                    height: itemHeight
+                    spacing: 5
+                    rightPadding: 5
+                    leftPadding: 5
+                    anchors.verticalCenter: parent.verticalCenter
+                    Rectangle {
+                        width: 40
+                        height: 15
                         color: captured_color
+                        border.color: activePalette.highlight
+                        border.width: 1
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Button {
+                        height: buttonHeight
+                        text: "Set"
+                        font.pixelSize: fontPixelSize
+                        onClicked: {
+                            my_picker.setColor(captured_color)
+                        }
                     }
                 }
-                Label {
-                    text: "Captured Color"
+            }
+
+            Rectangle {
+                border.width: 1
+                border.color: "Gray"
+                width: tests.implicitWidth
+                height: tests.implicitHeight
+                color: "transparent"
+                Row {
+                    id: tests
+                    height: itemHeight
+                    spacing: 5
+                    rightPadding: 5
+                    leftPadding: 5
+                    Button {
+                        height: buttonHeight
+                        text: "Layout"
+                        font.pixelSize: fontPixelSize
+                        onClicked: {
+                            my_picker.setFontCalculationWithDPM(false)
+                            my_picker.layoutWithGuess()
+                        }
+                    }
+                    Button {
+                        height: buttonHeight
+                        text: "Test1"
+                        font.pixelSize: fontPixelSize
+                        onClicked: {
+                            my_picker.setDpm(0.7 * window.Screen.pixelDensity)
+                            my_picker.layout()
+                        }
+                    }
+                    Button {
+                        height: buttonHeight
+                        text: "Test2"
+                        font.pixelSize: fontPixelSize
+                        onClicked: {
+                            my_picker.setFontCalculationWithDPM(true)
+                            my_picker.setDpm(0.7 * window.Screen.pixelDensity)
+                            my_picker.layout()
+                            my_picker.setFontCalculationWithDPM(false)
+                        }
+                    }
                 }
             }
         }
-        CheckBox {
-            id: paletteMode
-            text: "Palette Mode"
-            checked: my_picker.paletteMode
-            onClicked : {
-                my_picker.paletteMode = checked
-            }
-        }
-        CheckBox {
-            id: paletteModeDefault
-            text: "Enable Palette Mode"
-            checked: my_picker.enablePaletteMode
-            onClicked : {
-                my_picker.enablePaletteMode = checked
-            }
-        }
-        Column {
-            Button {
-                height: 20
-                text:"Capture color"
-                onClicked: {
-                    captured_color = my_picker.colorValue
-                }
-            }
-            Button {
-                height: 20
-                text:"Set captured color"
-                onClicked: {
-                    my_picker.setColor(captured_color)
-                }
-            }
+
+        SystemPalette {
+            id: activePalette
+            colorGroup: SystemPalette.Active
         }
     }
 
     Colorpicker {
         id: my_picker
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: flickable.bottom
         anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.left: parent.left
 
-        onColorChanged: {
+        onColorChanged: (changedColor) => {
             // test signal handler
             console.debug("handle signal:"+changedColor)
         }
