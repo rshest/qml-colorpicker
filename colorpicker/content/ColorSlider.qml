@@ -1,5 +1,5 @@
 // Vertical "slider" control used in colorpicker
-import QtQuick 2.11
+import QtQuick
 Item {
     property int cursorHeight: 7
     property real value: (1 - pickerCursor.y/height)
@@ -10,11 +10,11 @@ Item {
         Rectangle {
             x: -3; y: -height*0.5
             width: parent.width + 4; height: cursorHeight
-            border.color: "black"; border.width: 1
+            border.color: _activePalette.highlight; border.width: 1
             color: "transparent"
             Rectangle {
                 anchors.fill: parent; anchors.margins: 2
-                border.color: "white"; border.width: 1
+                border.color: _activePalette.highlightedText; border.width: 1
                 color: "transparent"
             }
         }
@@ -45,4 +45,3 @@ Item {
         pickerCursor.y = height * (1 - val)
     }
 }
-
