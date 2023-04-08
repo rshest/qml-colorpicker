@@ -180,7 +180,7 @@ ApplicationWindow {
                         font.pixelSize: fontPixelSize
                         onClicked: {
                             my_picker.setFontCalculationWithDPM(false)
-                            my_picker.layoutWithGuess()
+                            my_picker.layoutDefault()
                         }
                     }
                     Button {
@@ -199,6 +199,15 @@ ApplicationWindow {
                         onClicked: {
                             my_picker.setFontCalculationWithDPM(true)
                             my_picker.setDpm(0.7 * window.Screen.pixelDensity)
+
+                            console.debug('colorPicker.colorHandleRadius: from ' +  my_picker.getSizeValue("colorPicker.colorHandleRadius"))
+                            my_picker.setSizeValue("colorPicker.colorHandleRadius", 22)
+                            console.debug('colorPicker.colorHandleRadius: to ' +  my_picker.getSizeValue("colorPicker.colorHandleRadius"))
+
+                            console.debug('colorPicker.colorHandleRadius: from ' +  my_picker.getSizeValue("colorPicker.colorHandleRadius"))
+                            my_picker.setSizeValue("colorPicker.colorHandleRadius", 20)
+                            console.debug('colorPicker.colorHandleRadius: to ' +  my_picker.getSizeValue("colorPicker.colorHandleRadius"))
+
                             my_picker.layout()
                             my_picker.setFontCalculationWithDPM(false)
                         }

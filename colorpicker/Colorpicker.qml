@@ -411,6 +411,10 @@ Rectangle {
         _sizeConfig.guess()
         layout()
     }
+    function layoutDefault() {
+        _sizeConfig.initialize()
+        layout()
+    }
 
     function setDpm(_d) {
         _sizeConfig.setDpm(_d)
@@ -420,6 +424,12 @@ Rectangle {
     }
     function setFontCalculationWithDPM(_b) {
         _sizeConfig.fontCalculationWithDPM = _b
+    }
+    function setSizeValue(tag, _v) {
+        _sizeConfig.setSizeValue(tag, _v)
+    }
+    function getSizeValue(tag) {
+        return _sizeConfig.getSizeValue(tag)
     }
 
     function _dump_layout() {

@@ -84,13 +84,13 @@ Item {
     function _getValue(tag) {
         var str_list = tag.split('.')
         var tmp_json = internal.sizes_json
-        for (var i = 0; i < str_list.length; i++)
+        for (var i = 0; i < str_list.length; i++) {
             if(i == str_list.length - 1) {
                 return tmp_json[str_list[i]]
             } else {
                 tmp_json = tmp_json[str_list[i]]
             }
-
+        }
         console.log('error. unexpected tag:'+tag)
         return 0
     }
@@ -121,22 +121,23 @@ Item {
     }
 
     // utility method
-    function setValue(tag, value) {
+    function setSizeValue(tag, value) {
         if(_debugLayout) {
             console.debug('setValue() is called. tag:'+tag)
         }
         var str_list = tag.split('.')
         var tmp_json = internal.sizes_json
-        for (var i = 0; i < str_list.length; i++)
+        for (var i = 0; i < str_list.length; i++) {
             if(i == str_list.length - 1) {
                 if(_debugLayout) {
                     console.debug('setValue() overrides from '+tmp_json[str_list[i]]+' to '+ value)
                 }
                 tmp_json[str_list[i]] = value
+                return
             } else {
                 tmp_json = tmp_json[str_list[i]]
             }
-
+        }
         console.log('error. unexpected tag:'+tag)
         return 0
     }

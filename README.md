@@ -1,6 +1,4 @@
----
-title: "Colorpicker"
----
+# Colorpicker
 A basic colorpicker control made in Qt Quick/QML, as described in [the corresponding blog post](http://blog.ruslans.com/2010/12/cute-quick-colorpicker.html).
 
 # Prerequisite
@@ -18,6 +16,10 @@ see test directory and below gallery.
 - Support changing almost every layout parameters at runtime.
 
 # Gallery
+## Qt 6.4.3, WebAssembly (Chrome browser on Window10)
+### Basic Style, dynamic layout change demo(set 'colorPicker.colorHandleRadius' to 22) and fake low DotPerMilimeter.
+![](doc_image/wasm_on_chrome.png)
+
 ## Qt 6.4.3, windows (windows10)
 ### Basic Style
 ![](doc_image/win10_FHD_landscape_basic_normal.png)
@@ -60,3 +62,4 @@ see test directory and below gallery.
 
 ### Basic Style, palette mode and fake low DotPerMilimeter
 ![](doc_image/ios_iphone14pro_landscape_basic_smalldpm_pallete.png)
+
